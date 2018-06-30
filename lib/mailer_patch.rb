@@ -31,6 +31,9 @@ module MailerPatch
           if Setting.plugin_redmine_email_notification_content_filter['removeSubject']
             issue.subject = ''
           end
+          if Setting.plugin_redmine_email_notification_content_filter['removeNote']
+            journal.notes = ''
+          end
         end
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
@@ -38,9 +41,6 @@ module MailerPatch
         redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
         message_id journal
         references issue
-        if Setting.plugin_redmine_email_notification_content_filter['removeNote']
-          journal.notes = ''
-        end
         @author = journal.user
         s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
         s << "(#{issue.status.name}) " if journal.new_value_for('status_id')
@@ -62,6 +62,9 @@ module MailerPatch
           if Setting.plugin_redmine_email_notification_content_filter['removeSubject']
             issue.subject = ''
           end
+          if Setting.plugin_redmine_email_notification_content_filter['removeNote']
+            journal.notes = ''
+          end
         end
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
@@ -69,9 +72,6 @@ module MailerPatch
         redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
         message_id journal
         references issue
-        if Setting.plugin_redmine_email_notification_content_filter['removeNote']
-          journal.notes = ''
-        end
         @author = journal.user
         recipients issue.recipients
         # Watchers in cc
